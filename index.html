@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GREEN-API Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, button, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        textarea {
+            height: 150px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .readonly {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>GREEN-API Test Page</h2>
+        <label for="idInstance">idInstance:</label>
+        <input type="text" id="idInstance">
+
+        <label for="apiTokenInstance">ApiTokenInstance:</label>
+        <input type="text" id="apiTokenInstance">
+
+        <button onclick="callApiMethod('getSettings')">getSettings</button>
+        <button onclick="callApiMethod('getStateInstance')">getStateInstance</button>
+        <button onclick="callApiMethod('sendMessage')">sendMessage</button>
+        <button onclick="callApiMethod('sendFileByUrl')">sendFileByUrl</button>
+
+        <label for="response">Response:</label>
+        <textarea id="response" class="readonly" readonly></textarea>
+    </div>
+
+    <script>
+      function callApiMethod(method) {
+          let url;
+          if (method === 'getSettings') {
+              url = '/getSettings';
+          } else if (method === 'getStateInstance') {
+              url = '/getStateInstance';
+          } else {
+              // Если method не распознан, не делаем ничего
+              return;
+          }
+  
+          fetch(url)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Network response was not ok');
+                  }
+                  return response.text();
+              })
+              .then(data => {
+                  document.getElementById('response').value = data;
+              })
+              .catch(error => {
+                  console.error('Ошибка:', error);
+                  document.getElementById('response').value = 'Ошибка: ' + error.message;
+              });
+      }
+  </script>
+<!--
+    <script>
+        function callApiMethod() {
+          fetch('/getSettings')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('response').value = data;
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+
+            fetch('/getStateInstance')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('response').value = data;
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+        }
+      </script>
+     
+    <script>
+        function callApiMethod(method) {
+          let url;
+          if (method === 'getSettings') {
+            url = '/getSettings';
+          } else if (method === 'getStateInstance') {
+            url = '/getStateInstance';
+          }
+  
+          fetch(url)
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('response').value = data;
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+        }
+      </script> -->
+</body>
+</html>
